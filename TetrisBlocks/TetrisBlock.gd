@@ -15,7 +15,6 @@ func down():
 	if Global.check_tile_colliding($BlockTiles,addition_pos): 
 		to_still() 
 		return 
-	var board_next_pos=Global.map_to_board(next_pos).y
 	global_position = next_pos
 func left(): 
 	var next_pos = Vector2(global_position.x-Global.CELL_SIZE, global_position.y)
@@ -33,6 +32,8 @@ func right():
 
 func rotate_block(): 
 	rotate(deg2rad(90))
+	if Global.check_tile_colliding($BlockTiles,Vector2(0,0)): 
+		rotate(deg2rad(-90))
 func instant_down(): 
 	pass
 func _physics_process(delta):
