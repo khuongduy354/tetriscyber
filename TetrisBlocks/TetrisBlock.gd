@@ -2,26 +2,18 @@ extends Node2D
 export var is_I = false
 var still =false 
 signal still
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-func check_colliding(pos:Vector2): 
-	$Checker.global_position = pos
-#	if $Checker.get_overlapping_bodies().size() > 4: 
-#		return true
-#	return false 
-	for raycast in $Raycasts.get_children():
-		if raycast.is_colliding(): 
-			return true
-	return false
+
 
 func to_still(): 
+	for tile in $BlockTiles.get_children(): 
+		Global.save_tile_pos(tile)
 	still = true
 	emit_signal("still")
 	$down_timer.stop()
 func down(): 
 	var next_pos =Vector2( global_position.x,global_position.y + Global.CELL_SIZE)
-	if check_colliding(next_pos): 
+	var addition_pos = Vector2(0,Global.CELL_SIZE)
+	if Global.check_tile_colliding($BlockTiles,addition_pos): 
 		to_still() 
 		return 
 	var board_next_pos=Global.map_to_board(next_pos).y
@@ -33,16 +25,18 @@ func down():
 	global_position = next_pos
 func left(): 
 	var next_pos = Vector2(global_position.x-Global.CELL_SIZE, global_position.y)
-	if check_colliding(next_pos): 
+	var addition_pos = Vector2(-Global.CELL_SIZE,0)
+	if Global.check_tile_colliding($BlockTiles,addition_pos): 
 		return 
 	if Global.map_to_board(next_pos).x < 0: 
 		return
 	global_position = next_pos
 func right(): 
 	var next_pos = Vector2(global_position.x+Global.CELL_SIZE,global_position.y)
-	if check_colliding(next_pos): 
+	var addition_pos = Vector2(Global.CELL_SIZE,0)
+	
+	if Global.check_tile_colliding($BlockTiles,addition_pos): 
 		return
-	print(Global.map_to_board(next_pos).x )
 	if Global.map_to_board(next_pos).x > Global.board_cols - 1: 
 		return
 	global_position = next_pos

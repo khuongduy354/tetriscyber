@@ -13,3 +13,17 @@ func map_to_world(coor:Vector2):
 func map_to_board(coor:Vector2): 
 	var board_pos = (coor- Vector2(Global.HALF_CELLSIZE, Global.HALF_CELLSIZE))/Global.CELL_SIZE
 	return board_pos 
+
+var tile_coordinates = []
+
+func save_tile_pos(tile): 
+	var pos = map_to_board(tile.global_position)
+	tile_coordinates.push_back(pos)
+	pass 
+
+func check_tile_colliding(blocktiles,addition_pos): 
+	for tile in blocktiles.get_children(): 
+		var pos = map_to_board(tile.global_position+addition_pos)
+		if tile_coordinates.has(pos): 
+			return true
+		return false

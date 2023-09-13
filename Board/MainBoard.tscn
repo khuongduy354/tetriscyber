@@ -3,5 +3,4 @@
 [ext_resource path="res://Board/MainBoard.gd" type="Script" id=1]
 
 [node name="MainBoard" type="Node2D"]
-position = Vector2( 0, 3 )
 script = ExtResource( 1 )
