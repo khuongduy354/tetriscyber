@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://TetrisBlocks/TetrisBlockTile.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TetrisBlocks/TetrisBlock.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/2.png" type="Texture" id=3]
 
 [node name="TetrisBlock" instance=ExtResource( 2 )]
 
@@ -32,14 +33,19 @@ enabled = true
 cast_to = Vector2( 0, 16 )
 
 [node name="BlockTiles" type="Node2D" parent="." index="3"]
+position = Vector2( 16, 16 )
 
 [node name="TetrisBlockTile" parent="BlockTiles" index="0" instance=ExtResource( 1 )]
+texture = ExtResource( 3 )
 
 [node name="TetrisBlockTile2" parent="BlockTiles" index="1" instance=ExtResource( 1 )]
 position = Vector2( 32, 0 )
+texture = ExtResource( 3 )
 
 [node name="TetrisBlockTile3" parent="BlockTiles" index="2" instance=ExtResource( 1 )]
 position = Vector2( 0, -32 )
+texture = ExtResource( 3 )
 
 [node name="TetrisBlockTile4" parent="BlockTiles" index="3" instance=ExtResource( 1 )]
 position = Vector2( -32, 0 )
+texture = ExtResource( 3 )

@@ -1,15 +1,14 @@
 extends Node2D
-export var is_I = false
 var still =false 
 signal still
 
 
 func to_still(): 
-	for tile in $BlockTiles.get_children(): 
-		Global.save_tile_pos(tile)
 	still = true
 	emit_signal("still")
 	$down_timer.stop()
+	for tile in $BlockTiles.get_children(): 
+		Global.save_tile_pos(tile)
 func down(): 
 	var next_pos =Vector2( global_position.x,global_position.y + Global.CELL_SIZE)
 	var addition_pos = Vector2(0,Global.CELL_SIZE)
@@ -17,27 +16,18 @@ func down():
 		to_still() 
 		return 
 	var board_next_pos=Global.map_to_board(next_pos).y
-	if is_I: 
-		board_next_pos = floor(board_next_pos)
-	if  board_next_pos > Global.board_rows-1: 
-		to_still()
-		return
 	global_position = next_pos
 func left(): 
 	var next_pos = Vector2(global_position.x-Global.CELL_SIZE, global_position.y)
 	var addition_pos = Vector2(-Global.CELL_SIZE,0)
 	if Global.check_tile_colliding($BlockTiles,addition_pos): 
 		return 
-	if Global.map_to_board(next_pos).x < 0: 
-		return
 	global_position = next_pos
 func right(): 
 	var next_pos = Vector2(global_position.x+Global.CELL_SIZE,global_position.y)
 	var addition_pos = Vector2(Global.CELL_SIZE,0)
 	
 	if Global.check_tile_colliding($BlockTiles,addition_pos): 
-		return
-	if Global.map_to_board(next_pos).x > Global.board_cols - 1: 
 		return
 	global_position = next_pos
 
