@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Board/MainGame.gd" type="Script" id=1]
+[ext_resource path="res://assets/background.jpg" type="Texture" id=2]
 
 [node name="MainGame" type="Node2D"]
 script = ExtResource( 1 )
@@ -9,8 +10,14 @@ script = ExtResource( 1 )
 position = Vector2( 64, 0 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -16.0
-margin_top = -24.0
-margin_right = 1032.0
-margin_bottom = 620.0
+margin_left = -1426.0
+margin_top = 173.0
+margin_right = -378.0
+margin_bottom = 817.0
 color = Color( 0.223529, 0.360784, 0.552941, 1 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 514, 313 )
+scale = Vector2( 1.47276, 1.67835 )
+z_index = -2
+texture = ExtResource( 2 )

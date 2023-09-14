@@ -7,7 +7,8 @@ var board_pos = null
 var current_block = null 
 var rng =RandomNumberGenerator.new()
 func pick_random_block(): 
-	var i = rng.randi()%3
+#	var i = rng.randi()%7
+	var i = 0
 	var scene = ""
 	match i: 
 		0: 
@@ -16,22 +17,25 @@ func pick_random_block():
 			scene="res://TetrisBlocks/IBlock.tscn"
 		2: 
 			scene="res://TetrisBlocks/JBlock.tscn"
-#		3: 
-#			scene="res://TetrisBlocks/LBlock.tscn"
-#		4: 
-#			scene="res://TetrisBlocks/SBlock.tscn"
-#		5: 
-#			scene="res://TetrisBlocks/TBlock.tscn"
-#		6: 
-#			scene="res://TetrisBlocks/ZBlock.tscn"
+		3: 
+			scene="res://TetrisBlocks/LBlock.tscn"
+		4: 
+			scene="res://TetrisBlocks/SBlock.tscn"
+		5: 
+			scene="res://TetrisBlocks/TBlock.tscn"
+		6: 
+			scene="res://TetrisBlocks/ZBlock.tscn"
 	var block = load(scene).instance()
 	return block
+	
+func _on_still(blocktiles): 
+	spawn_block()
 func spawn_block(): 
 	var block = pick_random_block()
 	add_child(block)
 	block.global_position=$spawn_pos.global_position
 	current_block = block 
-	current_block.connect("still",self,"spawn_block")
+	Global.connect("still",self,"_on_still")
 func setup_board(): 
 	Global.set_surrounding()
 	var board_width = Global.CELL_SIZE * Global.board_cols

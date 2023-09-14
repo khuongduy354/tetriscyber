@@ -5,10 +5,9 @@ signal still
 
 func to_still(): 
 	still = true
-	emit_signal("still")
+	Global.emit_signal("still",$BlockTiles)
 	$down_timer.stop()
-	for tile in $BlockTiles.get_children(): 
-		Global.save_tile_pos(tile)
+
 func down(): 
 	var next_pos =Vector2( global_position.x,global_position.y + Global.CELL_SIZE)
 	var addition_pos = Vector2(0,Global.CELL_SIZE)
