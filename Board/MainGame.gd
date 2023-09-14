@@ -48,7 +48,7 @@ func setup_board():
 func _ready():
 	Global.game=self
 	var center = get_viewport().get_visible_rect().size.x/2
-	$spawn_pos.global_position =Vector2(center,100)	
+	$spawn_pos.global_position =Vector2(center,132)	
 	setup_board()
 	spawn_block()
 	rng.randomize()
