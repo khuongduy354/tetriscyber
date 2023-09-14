@@ -1,11 +1,16 @@
 extends Node
 signal still
+signal singleline
+signal doubleline
+signal tripleline
+signal tetrisclear
 
 export var CELL_SIZE = 32
 var HALF_CELLSIZE = CELL_SIZE/2
 export var board_rows = 14
 export var board_cols = 10
 var board = null
+var game = null
 var board_width = board_cols * CELL_SIZE
 var board_height = board_rows * CELL_SIZE
 
@@ -18,22 +23,63 @@ func _ready():
 # 2 lines = 300
 # 3 lines = 500
 # 4 lines = 800
- 
+func remove_global_tiles(coor): 
+	for i in range(0, tile_coordinates.size()):
+		if tile_coordinates[i] == coor: 
+			tile_coordinates.remove(i)
+			return
+	pass
+func shift_global_tiles(offset): 
+	for i in range(tile_coordinates.size()): 
+		var tile = tile_coordinates[i]
+		if !is_surround_tile(tile):
+			tile_coordinates[i]+=offset
+func is_surround_tile(tile): 
+	if tile.x==-1 or tile.y ==-1 or tile.x==board_cols or tile.y==board_rows: 
+		return true 
+	return false
+
 func check_lines(blocktiles): 
+	var lines_cleared_list = []
 	for y in range(0,board_rows): 
 		var line_cleared =true
 		for x in range(0,board_cols):
 			if !tile_coordinates.has(Vector2(x,y)):
 				line_cleared=false
 		if line_cleared: 
-			print(y)
-			print("CLEAR")
+			lines_cleared_list.push_back(y)
+	
+	if lines_cleared_list.size()>0: 
+	# clear lines	
+		for y in lines_cleared_list: 
+			for x in range(0,board_cols): 
+				for block in game.get_node("TileBlocks").get_children(): 
+					block.clear_tile(Vector2(x,y))
+					remove_global_tiles(Vector2(x,y))
+	# shift
+		for i in range(lines_cleared_list.size()):
+			for block in game.get_node("TileBlocks").get_children(): 
+				block.global_position.y+=CELL_SIZE
+	
+		shift_global_tiles(Vector2(0,lines_cleared_list.size()))
+		
+		
+	match lines_cleared_list.size(): 
+		1: 
+			emit_signal("singleline")
+		2: 
+			emit_signal("doubleline")
+		3: 
+			emit_signal("tripleline")
+		4: 
+			emit_signal("tetrisclear")
 
 
 func _on_still(blocktiles): 
 	for tile in blocktiles.get_children(): 
 		save_tile_pos(tile)
 	check_lines(blocktiles)
+	game.spawn_block()
 
 func map_to_world(coor:Vector2): 
 	var world_pos = coor * Global.CELL_SIZE+Vector2(Global.HALF_CELLSIZE,Global.HALF_CELLSIZE)
@@ -50,7 +96,6 @@ func set_surrounding():
 		tile_coordinates.push_back(Vector2(-1,y))
 	for y in range(-1,board_rows+1):
 		tile_coordinates.push_back(Vector2(board_cols,y))
-
 
 func save_tile_pos(tile): 
 	var pos = map_to_board(tile.global_position)

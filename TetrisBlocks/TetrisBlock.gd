@@ -2,7 +2,19 @@ extends Node2D
 var still =false 
 signal still
 
+func get_tile_from_pos(coor): 
+	for tile in $BlockTiles.get_children(): 
+		if Global.map_to_board(tile.global_position) == coor:
+			return tile
+	return null
+func clear_tile(coor): 
 
+	var tile = get_tile_from_pos(coor)
+	if tile:
+		$BlockTiles.remove_child(tile)
+		tile.queue_free()
+		if $BlockTiles.get_child_count() == 0: 
+			self.queue_free()
 func to_still(): 
 	still = true
 	Global.emit_signal("still",$BlockTiles)

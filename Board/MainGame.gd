@@ -27,15 +27,13 @@ func pick_random_block():
 			scene="res://TetrisBlocks/ZBlock.tscn"
 	var block = load(scene).instance()
 	return block
-	
-func _on_still(blocktiles): 
-	spawn_block()
+
 func spawn_block(): 
 	var block = pick_random_block()
-	add_child(block)
+	$TileBlocks.add_child(block)
 	block.global_position=$spawn_pos.global_position
 	current_block = block 
-	Global.connect("still",self,"_on_still")
+
 func setup_board(): 
 	Global.set_surrounding()
 	var board_width = Global.CELL_SIZE * Global.board_cols
@@ -48,6 +46,7 @@ func setup_board():
 	board.position=board_pos
 	
 func _ready():
+	Global.game=self
 	var center = get_viewport().get_visible_rect().size.x/2
 	$spawn_pos.global_position =Vector2(center,100)	
 	setup_board()

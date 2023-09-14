@@ -9,32 +9,7 @@
 [node name="Checker" parent="." index="1"]
 scale = Vector2( 1, 1.03079 )
 
-[node name="Raycasts" type="Node2D" parent="." index="2"]
-position = Vector2( 0, -33 )
-
-[node name="RayCast2D3" type="RayCast2D" parent="Raycasts" index="0"]
-position = Vector2( 0, 66 )
-enabled = true
-cast_to = Vector2( 0, 16 )
-
-[node name="RayCast2D4" type="RayCast2D" parent="Raycasts" index="1"]
-position = Vector2( 33, 33 )
-rotation = -1.57079
-enabled = true
-cast_to = Vector2( 0, 16 )
-
-[node name="RayCast2D6" type="RayCast2D" parent="Raycasts" index="2"]
-rotation = -3.14159
-enabled = true
-cast_to = Vector2( 0, 16 )
-
-[node name="RayCast2D5" type="RayCast2D" parent="Raycasts" index="3"]
-position = Vector2( -34, 33 )
-rotation = -4.71238
-enabled = true
-cast_to = Vector2( 0, 16 )
-
-[node name="BlockTiles" type="Node2D" parent="." index="3"]
+[node name="BlockTiles" type="Node2D" parent="." index="2"]
 
 [node name="TetrisBlockTile" parent="BlockTiles" index="0" instance=ExtResource( 2 )]
 position = Vector2( 16, 16 )
@@ -51,3 +26,5 @@ texture = ExtResource( 3 )
 [node name="TetrisBlockTile4" parent="BlockTiles" index="3" instance=ExtResource( 2 )]
 position = Vector2( -16, 16 )
 texture = ExtResource( 3 )
+
+[node name="RayCast2D" type="RayCast2D" parent="." index="4"]

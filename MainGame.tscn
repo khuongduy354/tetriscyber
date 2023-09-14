@@ -21,3 +21,5 @@ position = Vector2( 514, 313 )
 scale = Vector2( 1.47276, 1.67835 )
 z_index = -2
 texture = ExtResource( 2 )
+
+[node name="TileBlocks" type="Node2D" parent="."]
