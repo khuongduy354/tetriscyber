@@ -18,3 +18,8 @@ func _on_scored(add_up):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_TextureButton_pressed():
+	
+	pass # Replace with function body.

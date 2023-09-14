@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Board/MainGame.gd" type="Script" id=1]
 [ext_resource path="res://assets/background.jpg" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://assets/Main Board.png" type="Texture" id=4]
 [ext_resource path="res://CanvasLayer.gd" type="Script" id=5]
 [ext_resource path="res://assets/Main Board Outline.png" type="Texture" id=6]
+[ext_resource path="res://LeaderBoard.tscn" type="PackedScene" id=7]
+[ext_resource path="res://TetrisBlocks/Options.tscn" type="PackedScene" id=8]
 
 [node name="MainGame" type="Node2D"]
 script = ExtResource( 1 )
@@ -67,6 +69,19 @@ margin_right = 80.8809
 margin_bottom = 76.4989
 rect_scale = Vector2( 5.47609, 5.47609 )
 text = "SCORE"
+
+[node name="Control" parent="CanvasLayer/Control" instance=ExtResource( 8 )]
+margin_left = 937.0
+margin_top = 388.0
+margin_right = 937.0
+margin_bottom = 388.0
+
+[node name="LeaderBoard" parent="CanvasLayer" instance=ExtResource( 7 )]
+margin_left = 309.0
+margin_top = 19.0
+margin_right = 349.0
+margin_bottom = 59.0
+rect_scale = Vector2( 0.767734, 0.767734 )
 
 [node name="MainBoardOutline" type="Sprite" parent="."]
 position = Vector2( 514, 325 )
