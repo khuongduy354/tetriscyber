@@ -1,9 +1,8 @@
 extends Node
 signal still
-signal singleline
-signal doubleline
-signal tripleline
-signal tetrisclear
+signal clear_line
+signal scored
+
 
 export var CELL_SIZE = 32
 var HALF_CELLSIZE = CELL_SIZE/2
@@ -64,21 +63,15 @@ func check_lines(blocktiles):
 		shift_global_tiles(Vector2(0,lines_cleared_list.size()))
 		
 		
-	match lines_cleared_list.size(): 
-		1: 
-			emit_signal("singleline")
-		2: 
-			emit_signal("doubleline")
-		3: 
-			emit_signal("tripleline")
-		4: 
-			emit_signal("tetrisclear")
+	emit_signal("clear_line",lines_cleared_list.size())
+
 
 
 func _on_still(blocktiles): 
 	for tile in blocktiles.get_children(): 
 		save_tile_pos(tile)
 	check_lines(blocktiles)
+	emit_signal("scored",5)
 	game.spawn_block()
 
 func map_to_world(coor:Vector2): 

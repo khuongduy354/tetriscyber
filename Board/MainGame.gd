@@ -7,8 +7,8 @@ var board_pos = null
 var current_block = null 
 var rng =RandomNumberGenerator.new()
 func pick_random_block(): 
-#	var i = rng.randi()%7
-	var i = 0
+	var i = rng.randi()%7
+#	var i = 0
 	var scene = ""
 	match i: 
 		0: 
@@ -56,3 +56,12 @@ func _ready():
 	pass 
 
 
+
+func drop_bomb(): 
+	var bomb = preload("res://TetrisBlocks/Bomb.tscn").instance()
+	$TileBlocks.add_child(bomb)
+	bomb.global_position = $spawn_pos.global_position
+func _on_BombTimer_timeout():
+	if rng.randi()%2==0: 
+#		drop_bomb()
+		pass

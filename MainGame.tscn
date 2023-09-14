@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Board/MainGame.gd" type="Script" id=1]
 [ext_resource path="res://assets/background.jpg" type="Texture" id=2]
+[ext_resource path="res://ScoreHandler.gd" type="Script" id=3]
+[ext_resource path="res://assets/Main Board.png" type="Texture" id=4]
+[ext_resource path="res://CanvasLayer.gd" type="Script" id=5]
 
 [node name="MainGame" type="Node2D"]
 script = ExtResource( 1 )
@@ -18,8 +21,50 @@ color = Color( 0.223529, 0.360784, 0.552941, 1 )
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( 514, 313 )
-scale = Vector2( 1.47276, 1.67835 )
+scale = Vector2( 1.47276, 1.67607 )
 z_index = -2
 texture = ExtResource( 2 )
 
 [node name="TileBlocks" type="Node2D" parent="."]
+
+[node name="BombTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="ScoreHandler" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource( 5 )
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
+margin_left = 134.0
+margin_top = 19.0
+margin_right = 518.0
+margin_bottom = 787.0
+rect_scale = Vector2( 0.272004, 0.272004 )
+texture = ExtResource( 4 )
+
+[node name="Score" type="Label" parent="CanvasLayer/Control/TextureRect"]
+margin_left = 47.7933
+margin_top = 323.524
+margin_right = 87.7933
+margin_bottom = 337.524
+rect_scale = Vector2( 7.10208, 7.10208 )
+text = "0
+"
+align = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/TextureRect"]
+anchor_right = 1.0
+margin_left = 80.8809
+margin_top = 62.4989
+margin_right = 80.8809
+margin_bottom = 76.4989
+rect_scale = Vector2( 5.47609, 5.47609 )
+text = "SCORE"
+
+[connection signal="timeout" from="BombTimer" to="." method="_on_BombTimer_timeout"]

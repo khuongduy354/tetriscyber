@@ -8,7 +8,6 @@ func get_tile_from_pos(coor):
 			return tile
 	return null
 func clear_tile(coor): 
-
 	var tile = get_tile_from_pos(coor)
 	if tile:
 		$BlockTiles.remove_child(tile)
@@ -45,23 +44,26 @@ func rotate_block():
 	rotate(deg2rad(90))
 	if Global.check_tile_colliding($BlockTiles,Vector2(0,0)): 
 		rotate(deg2rad(-90))
-func instant_down(): 
-	pass
+
 func _physics_process(delta):
 	if still: 
 		return
-	if Input.is_action_just_pressed("instant_down"): 
-		instant_down()
 	if Input.is_action_pressed("ui_down"): 
 		if $down_cooldown.is_stopped():
 			down()
 			$down_cooldown.start()
 	if Input.is_action_just_pressed("ui_up"): 
 		rotate_block()
-	if Input.is_action_just_pressed("ui_left"): 
-		left()
-	if Input.is_action_just_pressed("ui_right"): 
-		right()
+	if Input.is_action_pressed("ui_left"): 
+		if $down_cooldown.is_stopped():
+			left()
+			$down_cooldown.start()
+	if Input.is_action_pressed("ui_right"): 
+		if $down_cooldown.is_stopped():
+			right()
+			$down_cooldown.start()
 
 func _on_down_timer_timeout():
+	if still: 
+		return
 	down()
