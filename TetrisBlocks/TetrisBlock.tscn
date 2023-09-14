@@ -10,7 +10,7 @@ script = ExtResource( 1 )
 autostart = true
 
 [node name="down_cooldown" type="Timer" parent="."]
-wait_time = 0.05
+wait_time = 0.1
 one_shot = true
 
 [connection signal="timeout" from="down_timer" to="." method="_on_down_timer_timeout"]

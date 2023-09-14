@@ -56,7 +56,13 @@ func _ready():
 	pass 
 
 
-
+#func _draw_tiles(): 
+#	for tile in Global.tile_coordinates: 
+#		var pos = Global.map_to_world(tile)
+#
+#func _physics_process(delta):
+#	_draw_tiles()
+#	pass 
 func drop_bomb(): 
 	var bomb = preload("res://TetrisBlocks/Bomb.tscn").instance()
 	$TileBlocks.add_child(bomb)

@@ -41,9 +41,9 @@ func right():
 	global_position = next_pos
 
 func rotate_block(): 
-	rotate(deg2rad(90))
+	$BlockTiles.rotate(deg2rad(90))
 	if Global.check_tile_colliding($BlockTiles,Vector2(0,0)): 
-		rotate(deg2rad(-90))
+			$BlockTiles.rotate(deg2rad(-90))
 
 func _physics_process(delta):
 	if still: 
