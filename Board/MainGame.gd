@@ -45,13 +45,15 @@ func setup_board():
 	add_child(board)
 	board.position=board_pos
 	
-func _ready():
+func start_game(): 
 	Global.game=self
 	var center = get_viewport().get_visible_rect().size.x/2
 	$spawn_pos.global_position =Vector2(center,132)	
 	setup_board()
 	spawn_block()
 	rng.randomize()
+func _ready():
+	start_game()
 
 	pass 
 
@@ -71,3 +73,10 @@ func _on_BombTimer_timeout():
 	if rng.randi()%2==0: 
 #		drop_bomb()
 		pass
+
+
+func _on_Play_pressed():
+	if Global.game_over: 
+		Global.reset_game()
+		Global.game_over= false
+	pass # Replace with function body.

@@ -5,6 +5,7 @@ signal scored
 
 
 export var CELL_SIZE = 32
+var game_over = false 
 var HALF_CELLSIZE = CELL_SIZE/2
 export var board_rows = 14
 export var board_cols = 10
@@ -14,6 +15,8 @@ var board_width = board_cols * CELL_SIZE
 var board_height = board_rows * CELL_SIZE
 
 var tile_coordinates = []
+
+var score_list=[]
 
 func _ready():
 	connect("still",self,"_on_still")
@@ -69,16 +72,29 @@ func check_lines(blocktiles):
 		
 		
 	emit_signal("clear_line",lines_cleared_list.size())
-
-
+func game_over(): 
+	game_over=true
+	var score = game.get_node("CanvasLayer").get_score()
+	score_list.push_back(score)
+	game.get_node("CanvasLayer").load_to_leaderboard()
+func check_fail(tile): 
+	for x in range(board_cols): 
+		var pos = Vector2(x,0)
+		if map_to_board(tile.global_position) == pos: 
+			game_over()
+			emit_signal("game_over")
+			return true 
+	return false
+					
 
 func _on_still(blocktiles): 
 	for tile in blocktiles.get_children(): 
+		if check_fail(tile): 
+			return 
 		save_tile_pos(tile)
 	check_lines(blocktiles)
 	emit_signal("scored",5)
 	game.spawn_block()
-	print(tile_coordinates)
 
 func map_to_world(coor:Vector2): 
 	var world_pos = coor * Global.CELL_SIZE+Vector2(Global.HALF_CELLSIZE,Global.HALF_CELLSIZE)
@@ -107,3 +123,11 @@ func check_tile_colliding(blocktiles,addition_pos):
 		if pos in tile_coordinates: 
 			return true
 	return false
+	
+func reset_game(): 
+	game.get_node("CanvasLayer").reset_score()
+	tile_coordinates=[]
+	for tile in game.get_node("TileBlocks").get_children(): 
+		game.get_node("TileBlocks").remove_child(tile)
+	game.start_game()
+	
