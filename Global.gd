@@ -31,18 +31,29 @@ func remove_global_tiles(coor):
 			tile_coordinates.remove(i)
 			return
 	pass
-func shift_global_tiles(offset,lower_y): 
+func shift_global_tiles(base_line): 
 	for i in range(tile_coordinates.size()): 
 		var tile = tile_coordinates[i]
 		if !is_surround_tile(tile):
-			if tile_coordinates[i].y <= lower_y: 
-				tile_coordinates[i]+=offset
+			if tile.y < base_line: 
+				tile_coordinates[i].y+=1
 func is_surround_tile(tile): 
 	if tile.x==-1 or tile.y ==-1 or tile.x==board_cols or tile.y==board_rows: 
 		return true 
 	return false
-
+func drop_tile(base_line): 
+	# drop real blocks 
+	for block in game.get_node("TileBlocks").get_children(): 
+		for tile in block.get_node("BlockTiles").get_children(): 
+			var pos = map_to_board(tile.global_position)
+			if pos.y < base_line: 
+				tile.global_position.y+=CELL_SIZE
+	# drop array
+	shift_global_tiles(base_line)
+	
+	pass 
 func check_lines(blocktiles): 
+	# get all lines
 	var lines_cleared_list = []
 	for y in range(0,board_rows): 
 		var line_cleared =true
@@ -52,8 +63,9 @@ func check_lines(blocktiles):
 		if line_cleared: 
 			lines_cleared_list.push_back(y)
 	
-	if lines_cleared_list.size()>0: 
-		var length = lines_cleared_list.size()
+	var length = lines_cleared_list.size()
+	if length>0:
+		print("run") 
 	# clear lines	
 		for y in lines_cleared_list: 
 			for x in range(0,board_cols): 
@@ -61,17 +73,13 @@ func check_lines(blocktiles):
 					block.clear_tile(Vector2(x,y))
 					remove_global_tiles(Vector2(x,y))
 	# shift
-	
+		# for each height 
+		# -> shift any cell above that height 
 		for i in range(lines_cleared_list.size()):
-			for block in game.get_node("TileBlocks").get_children(): 
-				for tile in block.get_node("BlockTiles").get_children(): 
-					var pos = map_to_board(tile.global_position)
-					if pos.y < lines_cleared_list[length-1]: 
-						tile.global_position.y+=CELL_SIZE
-		shift_global_tiles(Vector2(0,length),lines_cleared_list[length-1])
-		
-		
-	emit_signal("clear_line",lines_cleared_list.size())
+			var base_line = lines_cleared_list[i] 
+			drop_tile(base_line)
+		emit_signal("clear_line",lines_cleared_list.size())
+
 func game_over(): 
 	game_over=true
 	var score = game.get_node("CanvasLayer").get_score()
@@ -92,9 +100,15 @@ func _on_still(blocktiles):
 		if check_fail(tile): 
 			return 
 		save_tile_pos(tile)
+
+	
 	check_lines(blocktiles)
 	emit_signal("scored",5)
 	game.spawn_block()
+	print("BREAK")
+	for pos in tile_coordinates: 
+		if !is_surround_tile(pos): 
+			print(pos)
 
 func map_to_world(coor:Vector2): 
 	var world_pos = coor * Global.CELL_SIZE+Vector2(Global.HALF_CELLSIZE,Global.HALF_CELLSIZE)
@@ -114,9 +128,18 @@ func set_surrounding():
 
 func save_tile_pos(tile): 
 	var pos = map_to_board(tile.global_position)
-	tile_coordinates.push_back(pos)
+	print(pos)
+	if !tile_coordinates.has(pos):
+		tile_coordinates.push_back(pos)
 	pass 
-
+func check_tile_colliding_rotation(blocktiles,deg):
+	blocktiles.rotate(deg2rad(deg)) 
+	for tile in blocktiles.get_children(): 
+		var pos = map_to_board(tile.global_position)
+		if pos in tile_coordinates: 
+			blocktiles.rotate(deg2rad(-deg)) 
+			return true
+	return false
 func check_tile_colliding(blocktiles,addition_pos): 
 	for tile in blocktiles.get_children(): 
 		var pos = map_to_board(tile.global_position+addition_pos)

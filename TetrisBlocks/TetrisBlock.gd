@@ -1,5 +1,6 @@
 extends Node2D
 var still =false 
+export var is_bomb=false
 signal still
 
 func get_tile_from_pos(coor): 
@@ -18,42 +19,49 @@ func to_still():
 	still = true
 	Global.emit_signal("still",$BlockTiles)
 	$down_timer.stop()
+var is_right =false
+var is_left  =false
 
 func down(): 
-	var next_pos =Vector2( global_position.x,global_position.y + Global.CELL_SIZE)
+	var next_pos =Vector2( $BlockTiles.global_position.x,$BlockTiles.global_position.y + Global.CELL_SIZE)
 	var addition_pos = Vector2(0,Global.CELL_SIZE)
 	if Global.check_tile_colliding($BlockTiles,addition_pos): 
 		to_still() 
 		return 
-	global_position = next_pos
-func left(): 
-	var next_pos = Vector2(global_position.x-Global.CELL_SIZE, global_position.y)
+	$BlockTiles.global_position = next_pos
+func left():
+	var next_pos = Vector2($BlockTiles.global_position.x-Global.CELL_SIZE, $BlockTiles.global_position.y)
 	var addition_pos = Vector2(-Global.CELL_SIZE,0)
 	if Global.check_tile_colliding($BlockTiles,addition_pos): 
 		return 
-	global_position = next_pos
+	$BlockTiles.global_position = next_pos
 func right(): 
-	var next_pos = Vector2(global_position.x+Global.CELL_SIZE,global_position.y)
+	var next_pos = Vector2($BlockTiles.global_position.x+Global.CELL_SIZE,$BlockTiles.global_position.y)
 	var addition_pos = Vector2(Global.CELL_SIZE,0)
 	
 	if Global.check_tile_colliding($BlockTiles,addition_pos): 
 		return
-	global_position = next_pos
-
+	$BlockTiles.global_position = next_pos
+	
+var rotating = false 
 func rotate_block(): 
-	$BlockTiles.rotate(deg2rad(90))
-	if Global.check_tile_colliding($BlockTiles,Vector2(0,0)): 
-			$BlockTiles.rotate(deg2rad(-90))
+	rotating = true 
+	Global.check_tile_colliding_rotation($BlockTiles,90)
+	rotating = false
+	
 
 func _physics_process(delta):
-	if still: 
+	if still or rotating: 
 		return
 	if Input.is_action_pressed("ui_down"): 
 		if $down_cooldown.is_stopped():
 			down()
+			$down_timer.stop()
+			$down_timer.start()
 			$down_cooldown.start()
 	if Input.is_action_just_pressed("ui_up"): 
-		rotate_block()
+		if !rotating: 
+			rotate_block()
 	if Input.is_action_pressed("ui_left"): 
 		if $down_cooldown.is_stopped():
 			left()
@@ -62,6 +70,7 @@ func _physics_process(delta):
 		if $down_cooldown.is_stopped():
 			right()
 			$down_cooldown.start()
+			
 
 func _on_down_timer_timeout():
 	if still: 

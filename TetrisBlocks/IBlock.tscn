@@ -6,34 +6,7 @@
 
 [node name="TetrisBlock" instance=ExtResource( 2 )]
 
-[node name="Raycasts" type="Node2D" parent="." index="2"]
-position = Vector2( 0, -16 )
-
-[node name="RayCast2D3" type="RayCast2D" parent="Raycasts" index="0"]
-position = Vector2( 0, 17 )
-enabled = true
-cast_to = Vector2( 0, 16 )
-
-[node name="RayCast2D4" type="RayCast2D" parent="Raycasts" index="1"]
-position = Vector2( 66, 0 )
-rotation = -1.57079
-enabled = true
-cast_to = Vector2( 0, 16 )
-
-[node name="RayCast2D6" type="RayCast2D" parent="Raycasts" index="2"]
-position = Vector2( 0, -17 )
-rotation = -3.14159
-enabled = true
-cast_to = Vector2( 0, 16 )
-
-[node name="RayCast2D5" type="RayCast2D" parent="Raycasts" index="3"]
-position = Vector2( -66, 0 )
-rotation = -4.71238
-enabled = true
-cast_to = Vector2( 0, 16 )
-
-[node name="BlockTiles" type="Node2D" parent="." index="3"]
-position = Vector2( 0, 32 )
+[node name="BlockTiles" type="Node2D" parent="." index="2"]
 
 [node name="TetrisBlockTile" parent="BlockTiles" index="0" instance=ExtResource( 1 )]
 position = Vector2( -16, -16 )
