@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Global="*res://Global.gd"
+QuestionData="*res://QuestionData.gd"
 
 [display]
 

@@ -2,7 +2,6 @@ extends Node2D
 var still =false 
 export var is_bomb=false
 signal still
-
 func get_tile_from_pos(coor): 
 	for tile in $BlockTiles.get_children(): 
 		if Global.map_to_board(tile.global_position) == coor:
@@ -17,7 +16,7 @@ func clear_tile(coor):
 			self.queue_free()
 func to_still(): 
 	still = true
-	Global.emit_signal("still",$BlockTiles)
+	Global.emit_signal("still",$BlockTiles,self)
 	$down_timer.stop()
 var is_right =false
 var is_left  =false
@@ -51,7 +50,7 @@ func rotate_block():
 	
 
 func _physics_process(delta):
-	if still or rotating: 
+	if still or rotating or is_bomb: 
 		return
 	if Input.is_action_pressed("ui_down"): 
 		if $down_cooldown.is_stopped():

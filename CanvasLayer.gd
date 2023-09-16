@@ -7,6 +7,13 @@ onready var scorepoint = $Control/TextureRect/Score
 # var b = "text"
 func _initialize(g): 
 	game = g 
+	
+func pop_question(): 
+	$Question.load_questions()
+	$Question.visible = true
+	
+func hide_question(): 
+	$Question.visible = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

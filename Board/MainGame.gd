@@ -4,6 +4,7 @@ var board_pos = null
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+export var bomb_spawn_rate = 50
 var current_block = null 
 var rng =RandomNumberGenerator.new()
 func pick_random_block(): 
@@ -27,13 +28,25 @@ func pick_random_block():
 			scene="res://TetrisBlocks/ZBlock.tscn"
 	var block = load(scene).instance()
 	return block
-
+func spawn_bomb(): 
+	var bomb = preload("res://TetrisBlocks/Bombs.tscn").instance()
+	$TileBlocks.add_child(bomb)
+	bomb.global_position=$spawn_pos.global_position
+	current_block = bomb
 func spawn_block(): 
 	var block = pick_random_block()
 	$TileBlocks.add_child(block)
 	block.global_position=$spawn_pos.global_position
 	current_block = block 
-
+func pause_game(): 
+	for child in $TileBlocks.get_children(): 
+		child.set_physics_process(false)
+		child.get_node("down_timer").stop()
+func resume_game(): 
+	for child in $TileBlocks.get_children(): 
+		child.set_physics_process(true)
+		child.get_node("down_timer").start()
+		
 func setup_board(): 
 	Global.set_surrounding()
 	var board_width = Global.CELL_SIZE * Global.board_cols
@@ -50,33 +63,30 @@ func start_game():
 	var center = get_viewport().get_visible_rect().size.x/2
 	$spawn_pos.global_position =Vector2(center,132)	
 	setup_board()
-	spawn_block()
-	rng.randomize()
+	spawn_manager()
+
+func spawn_manager(): 
+	if rng.randi()%2==0:
+		spawn_block()
+	else:
+		spawn_bomb()
+
+
 func _ready():
+	rng.randomize()
 	start_game()
 
-	pass 
 
 
-#func _draw_tiles(): 
-#	for tile in Global.tile_coordinates: 
-#		var pos = Global.map_to_world(tile)
-#
-#func _physics_process(delta):
-#	_draw_tiles()
-#	pass 
-func drop_bomb(): 
-	var bomb = preload("res://TetrisBlocks/Bomb.tscn").instance()
-	$TileBlocks.add_child(bomb)
-	bomb.global_position = $spawn_pos.global_position
-func _on_BombTimer_timeout():
-	if rng.randi()%2==0: 
-#		drop_bomb()
-		pass
 
 
 func _on_Play_pressed():
 	if Global.game_over: 
 		Global.reset_game()
 		Global.game_over= false
-	pass # Replace with function body.
+	else: 
+		resume_game()
+
+
+func _on_Pause_pressed():
+	pause_game()

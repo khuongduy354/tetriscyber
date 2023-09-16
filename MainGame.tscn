@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Board/MainGame.gd" type="Script" id=1]
 [ext_resource path="res://assets/background.jpg" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://LeaderBoard.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/Menu Buttons/Square Buttons/Colored Square Buttons/Play col_Square Button.png" type="Texture" id=8]
 [ext_resource path="res://assets/Menu Buttons/Square Buttons/Colored Square Buttons/Pause col_Square Button.png" type="Texture" id=9]
+[ext_resource path="res://Question.tscn" type="PackedScene" id=10]
 
 [node name="MainGame" type="Node2D"]
 script = ExtResource( 1 )
@@ -30,9 +31,6 @@ z_index = -2
 texture = ExtResource( 2 )
 
 [node name="TileBlocks" type="Node2D" parent="."]
-
-[node name="BombTimer" type="Timer" parent="."]
-autostart = true
 
 [node name="ScoreHandler" type="Node2D" parent="."]
 script = ExtResource( 3 )
@@ -106,11 +104,18 @@ margin_right = 349.0
 margin_bottom = 59.0
 rect_scale = Vector2( 0.767734, 0.767734 )
 
+[node name="Question" parent="CanvasLayer" instance=ExtResource( 10 )]
+visible = false
+margin_left = -18.0
+margin_top = -9.0
+margin_right = 22.0
+margin_bottom = 31.0
+
 [node name="MainBoardOutline" type="Sprite" parent="."]
 position = Vector2( 514, 325 )
 scale = Vector2( 0.98, 0.635 )
 z_index = 3
 texture = ExtResource( 6 )
 
-[connection signal="timeout" from="BombTimer" to="." method="_on_BombTimer_timeout"]
 [connection signal="pressed" from="CanvasLayer/Control/Buttons/HBoxContainer/Play" to="." method="_on_Play_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Buttons/HBoxContainer/Pause" to="." method="_on_Pause_pressed"]

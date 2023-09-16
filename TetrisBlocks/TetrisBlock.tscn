@@ -7,6 +7,7 @@ z_index = 1
 script = ExtResource( 1 )
 
 [node name="down_timer" type="Timer" parent="."]
+autostart = true
 
 [node name="down_cooldown" type="Timer" parent="."]
 wait_time = 0.1

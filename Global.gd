@@ -93,22 +93,28 @@ func check_fail(tile):
 			emit_signal("game_over")
 			return true 
 	return false
-					
+	
 
-func _on_still(blocktiles): 
+# bomb -> canvas pop question, pause game
+# 
+func check_bomb(block): 
+	print(block)
+	if block.is_bomb:
+		game.pause_game()
+		game.get_node("CanvasLayer").pop_question()
+		return true 
+	return false
+
+func _on_still(blocktiles,block): 
 	for tile in blocktiles.get_children(): 
 		if check_fail(tile): 
 			return 
 		save_tile_pos(tile)
-
-	
+	if check_bomb(block): 
+		return
 	check_lines(blocktiles)
 	emit_signal("scored",5)
-	game.spawn_block()
-	print("BREAK")
-	for pos in tile_coordinates: 
-		if !is_surround_tile(pos): 
-			print(pos)
+	game.spawn_manager()
 
 func map_to_world(coor:Vector2): 
 	var world_pos = coor * Global.CELL_SIZE+Vector2(Global.HALF_CELLSIZE,Global.HALF_CELLSIZE)
