@@ -1,0 +1,13 @@
+- bomb speed is 1 tile drop/1 sec, if question right reduce 0.1 sec (increase speed), fastest speed is 1 tile drop/0.1sec
+- block drop is 1 tile drop/1 sec
+ 
+
+- block landed gain 5 points
+- 1 line clear 100 points 
+- 2 line clear 300 points
+- 3 line clear 500 points
+- 4 line clear 800 points 
+
+- answer wrong -50 points 
+- answer right +50 points 
+
