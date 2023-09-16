@@ -19,7 +19,7 @@ var board_height = board_rows * CELL_SIZE
 var current_bomb = null
 
 var tile_coordinates = []
-
+var bomb_coordinates = []
 var score_list=[]
 
 func _ready():
@@ -77,7 +77,7 @@ func check_lines(blocktiles):
 	for y in range(0,board_rows): 
 		var line_cleared =true
 		for x in range(0,board_cols):
-			if !tile_coordinates.has(Vector2(x,y)):
+			if !tile_coordinates.has(Vector2(x,y)) or bomb_coordinates.has(Vector2(x,y)):
 				line_cleared=false
 		if line_cleared: 
 			lines_cleared_list.push_back(y)
@@ -88,7 +88,7 @@ func check_lines(blocktiles):
 	# clear lines	
 		for y in lines_cleared_list: 
 			for x in range(0,board_cols): 
-				for block in game.get_node("TileBlocks").get_children(): 
+				for block in game.get_node("TileBlocks").get_children():
 					block.clear_tile(Vector2(x,y))
 					remove_global_tiles(Vector2(x,y))
 	# shift
@@ -119,6 +119,8 @@ func check_bomb(block):
 		game.pause_game()
 		game.get_node("CanvasLayer").pop_question()
 		current_bomb = block
+		var pos = map_to_board(current_bomb.get_node("BlockTiles").global_position)
+		bomb_coordinates.push_back(pos)
 		return true 
 	return false
 

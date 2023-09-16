@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://TetrisBlocks/TetrisBlock.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TetrisBlocks/TetrisBlockTile.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/Bomb(1).png" type="Texture" id=3]
 
 [node name="Bombs" instance=ExtResource( 1 )]
 is_bomb = true
@@ -10,4 +11,4 @@ is_bomb = true
 position = Vector2( 16, 16 )
 
 [node name="Icon" parent="BlockTiles" index="0" instance=ExtResource( 2 )]
-scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )

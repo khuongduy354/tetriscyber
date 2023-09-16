@@ -66,10 +66,10 @@ func start_game():
 	spawn_manager()
 
 func spawn_manager(): 
-	if rng.randi()%2==0:
-		spawn_block()
-	else:
+	if rng.randi()%5==0:
 		spawn_bomb()
+	else:
+		spawn_block()
 
 
 func _ready():
