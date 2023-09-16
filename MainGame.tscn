@@ -104,12 +104,26 @@ margin_right = 349.0
 margin_bottom = 59.0
 rect_scale = Vector2( 0.767734, 0.767734 )
 
-[node name="Question" parent="CanvasLayer" instance=ExtResource( 10 )]
-visible = false
-margin_left = -18.0
-margin_top = -9.0
-margin_right = 22.0
-margin_bottom = 31.0
+[node name="QuestionContainer" type="Control" parent="CanvasLayer"]
+margin_left = 355.0
+margin_top = 96.0
+margin_right = 395.0
+margin_bottom = 136.0
+rect_min_size = Vector2( 322, 460 )
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/QuestionContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Question" parent="CanvasLayer/QuestionContainer/CenterContainer" instance=ExtResource( 10 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 161.0
+margin_top = 230.0
+margin_right = 161.0
+margin_bottom = 230.0
 
 [node name="MainBoardOutline" type="Sprite" parent="."]
 position = Vector2( 514, 325 )

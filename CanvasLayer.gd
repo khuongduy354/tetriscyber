@@ -2,6 +2,7 @@ extends CanvasLayer
 
 var game = null
 onready var scorepoint = $Control/TextureRect/Score
+onready var question = $QuestionContainer/CenterContainer/Question
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -9,11 +10,9 @@ func _initialize(g):
 	game = g 
 	
 func pop_question(): 
-	$Question.load_questions()
-	$Question.visible = true
-	
-func hide_question(): 
-	$Question.visible = false
+	question.load_questions()
+	question.visible = true
+		
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

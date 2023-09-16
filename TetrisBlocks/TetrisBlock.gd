@@ -2,6 +2,10 @@ extends Node2D
 var still =false 
 export var is_bomb=false
 signal still
+func _ready(): 
+	if is_bomb:
+		$down_timer.wait_time = Global.bomb_timer
+	pass 
 func get_tile_from_pos(coor): 
 	for tile in $BlockTiles.get_children(): 
 		if Global.map_to_board(tile.global_position) == coor:

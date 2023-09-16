@@ -2,7 +2,10 @@ extends Node
 signal still
 signal clear_line
 signal scored
+signal correct_answer
+signal wrong_answer
 
+var bomb_timer = 1
 
 export var CELL_SIZE = 32
 var game_over = false 
@@ -13,6 +16,7 @@ var board = null
 var game = null
 var board_width = board_cols * CELL_SIZE
 var board_height = board_rows * CELL_SIZE
+var current_bomb = null
 
 var tile_coordinates = []
 
@@ -20,11 +24,26 @@ var score_list=[]
 
 func _ready():
 	connect("still",self,"_on_still")
-# still = 20 points
-# 1 line = 100
-# 2 lines = 300
-# 3 lines = 500
-# 4 lines = 800
+	connect("correct_answer",self,"_on_correct_answer")
+	connect("wrong_answer",self,"_on_wrong_answer")
+func _on_wrong_answer(): 
+	var score = game.get_node("CanvasLayer").get_score()
+	if score >= 50: 
+		emit_signal("scored",-50)
+		
+	game.spawn_manager()
+
+func _on_correct_answer(): 
+	emit_signal("scored",100)
+	if bomb_timer >= 0.1: 
+		bomb_timer -= 0.1
+	if current_bomb: 
+		var pos = map_to_board(current_bomb.get_node("BlockTiles").global_position)
+		current_bomb.queue_free()
+		remove_global_tiles(pos)
+	
+	game.spawn_manager()
+
 func remove_global_tiles(coor): 
 	for i in range(0, tile_coordinates.size()):
 		if tile_coordinates[i] == coor: 
@@ -95,13 +114,11 @@ func check_fail(tile):
 	return false
 	
 
-# bomb -> canvas pop question, pause game
-# 
 func check_bomb(block): 
-	print(block)
 	if block.is_bomb:
 		game.pause_game()
 		game.get_node("CanvasLayer").pop_question()
+		current_bomb = block
 		return true 
 	return false
 

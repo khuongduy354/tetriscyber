@@ -26,6 +26,7 @@ func load_questions():
 		var option = data.get(idx)
 		if option: 
 			var option_node = grid.get_node(idx) 
+			option_node.text=option
 			option_node.visible =true 
 
 
@@ -33,25 +34,33 @@ func load_questions():
 
 func _on_1_pressed():
 	if correct == 1: 
-		emit_signal("correct_answer")
+		Global.emit_signal("correct_answer")
 	else: 
-		emit_signal("wrong_answer")
+		Global.emit_signal("wrong_answer")
 
+	visible = false
 
-func _on_2_toggled(button_pressed):
-	if correct == 2: 
-		emit_signal("correct_answer")
-	else: 
-		emit_signal("wrong_answer")
 
 func _on_3_pressed():
 	if correct == 3: 
-		emit_signal("correct_answer")
+		Global.emit_signal("correct_answer")
 	else: 
-		emit_signal("wrong_answer")
+		Global.emit_signal("wrong_answer")
 
+	visible = false
 func _on_4_pressed():
 	if correct == 4: 
-		emit_signal("correct_answer")
+		Global.emit_signal("correct_answer")
 	else: 
-		emit_signal("wrong_answer")
+		Global.emit_signal("wrong_answer")
+
+	visible = false
+
+
+func _on_2_pressed():
+	if correct == 2: 
+		Global.emit_signal("correct_answer")
+	else: 
+		Global.emit_signal("wrong_answer")
+
+	visible = false
