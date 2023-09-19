@@ -10,7 +10,16 @@ onready var explanation = $VBoxContainer/Explanation
 onready var question = $VBoxContainer/Question
 var correct: int
 
-
+func line_break(inp_str:String,max_size): 
+	var interval = max_size
+	if inp_str.length() > interval: 
+		var output_str = ""
+		for word in inp_str:
+			output_str+=word
+			if output_str.length() % interval == 0: 
+				output_str+="\n" 
+		return output_str
+	return inp_str
 
 func load_questions(): 
 	var data = QuestionData.data[0]
@@ -26,7 +35,7 @@ func load_questions():
 		var option = data.get(idx)
 		if option: 
 			var option_node = grid.get_node(idx) 
-			option_node.text=option
+			option_node.text=line_break(option,option_node.text.length())
 			option_node.visible =true 
 
 

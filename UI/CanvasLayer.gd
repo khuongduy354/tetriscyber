@@ -2,7 +2,7 @@ extends CanvasLayer
 
 var game = null
 onready var scorepoint = $Control/TextureRect/Score
-onready var question = $QuestionContainer/CenterContainer/Question
+onready var question = $QuestionContainer/Question
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
