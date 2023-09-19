@@ -5,7 +5,7 @@ signal scored
 signal correct_answer
 signal wrong_answer
 
-var bomb_timer = 1
+var bomb_timer = 0.7
 
 export var CELL_SIZE = 32
 var game_over = false 
@@ -35,15 +35,22 @@ func _on_wrong_answer():
 
 func _on_correct_answer(): 
 	emit_signal("scored",100)
-	if bomb_timer >= 0.1: 
-		bomb_timer -= 0.1
+	if bomb_timer >= 0.02: 
+		bomb_timer -= 0.02
 	if current_bomb: 
 		var pos = map_to_board(current_bomb.get_node("BlockTiles").global_position)
 		current_bomb.queue_free()
 		remove_global_tiles(pos)
+		remove_bomb_tiles(pos)
 	
 	game.spawn_manager()
 
+func remove_bomb_tiles(coor):
+	for i in range(0, bomb_coordinates.size()):
+		if bomb_coordinates[i] == coor: 
+			bomb_coordinates.remove(i)
+			return
+	pass
 func remove_global_tiles(coor): 
 	for i in range(0, tile_coordinates.size()):
 		if tile_coordinates[i] == coor: 
@@ -55,6 +62,13 @@ func shift_global_tiles(base_line):
 		var tile = tile_coordinates[i]
 		if !is_surround_tile(tile):
 			if tile.y < base_line: 
+				for j in range(bomb_coordinates.size()): 
+					var bomb_coord = bomb_coordinates[j]
+					if bomb_coord.y == tile_coordinates[i].y:
+						bomb_coordinates[j].y+=1
+						break
+						print("bomb_coors")
+						print(bomb_coordinates[j].y)
 				tile_coordinates[i].y+=1
 func is_surround_tile(tile): 
 	if tile.x==-1 or tile.y ==-1 or tile.x==board_cols or tile.y==board_rows: 
@@ -84,7 +98,6 @@ func check_lines(blocktiles):
 	
 	var length = lines_cleared_list.size()
 	if length>0:
-		print("run") 
 	# clear lines	
 		for y in lines_cleared_list: 
 			for x in range(0,board_cols): 
@@ -153,12 +166,12 @@ func set_surrounding():
 
 func save_tile_pos(tile): 
 	var pos = map_to_board(tile.global_position)
-	print(pos)
 	if !tile_coordinates.has(pos):
 		tile_coordinates.push_back(pos)
 	pass 
 func check_tile_colliding_rotation(blocktiles,deg):
-	blocktiles.rotate(deg2rad(deg)) 
+	blocktiles.rotate(deg2rad(deg))
+	blocktiles.rotation_degrees=fmod(blocktiles.rotation_degrees,360)
 	for tile in blocktiles.get_children(): 
 		var pos = map_to_board(tile.global_position)
 		if pos in tile_coordinates: 

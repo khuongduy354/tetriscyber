@@ -24,8 +24,11 @@ func to_still():
 	$down_timer.stop()
 var is_right =false
 var is_left  =false
+var rotating = false 
 
 func down(): 
+	if rotating:
+		return 
 	var next_pos =Vector2( $BlockTiles.global_position.x,$BlockTiles.global_position.y + Global.CELL_SIZE)
 	var addition_pos = Vector2(0,Global.CELL_SIZE)
 	if Global.check_tile_colliding($BlockTiles,addition_pos): 
@@ -45,11 +48,11 @@ func right():
 	if Global.check_tile_colliding($BlockTiles,addition_pos): 
 		return
 	$BlockTiles.global_position = next_pos
-	
-var rotating = false 
 func rotate_block(): 
 	rotating = true 
 	Global.check_tile_colliding_rotation($BlockTiles,90)
+	for child in $BlockTiles.get_children(): 
+		var pos = Global.map_to_board(child.global_position)
 	rotating = false
 	
 
@@ -66,7 +69,7 @@ func _physics_process(delta):
 		if !rotating: 
 			rotate_block()
 	if Input.is_action_pressed("ui_left"): 
-		if $down_cooldown.is_stopped():
+		if $down_cooldown.is_stopped() :
 			left()
 			$down_cooldown.start()
 	if Input.is_action_pressed("ui_right"): 
@@ -76,6 +79,6 @@ func _physics_process(delta):
 			
 
 func _on_down_timer_timeout():
-	if still: 
+	if still or rotating: 
 		return
 	down()
